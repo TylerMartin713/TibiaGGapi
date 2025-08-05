@@ -1,0 +1,42 @@
+[
+    {
+        "model": "TibiaGGapi.vocation",
+        "pk": 1,
+        "fields": {
+            "name": "Sorcerer"
+        }
+
+    },
+    {
+        "model": "TibiaGGapi.vocation",
+        "pk": 2,
+        "fields": {
+            "name": "Druid"
+        }
+
+    },
+    {
+        "model": "TibiaGGapi.vocation",
+        "pk": 3,
+        "fields": {
+            "name": "Knight"
+        }
+
+    },
+    {
+        "model": "TibiaGGapi.vocation",
+        "pk": 4,
+        "fields": {
+            "name": "Paladin"
+        }
+
+    },
+    {
+        "model": "TibiaGGapi.vocation",
+        "pk": 5,
+        "fields": {
+            "name": "Monk"
+        }
+
+    }
+]

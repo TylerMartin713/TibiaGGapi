@@ -1,0 +1,16 @@
+[
+    {
+        "model": "TibiaGGapi.location",
+        "pk": 1,
+        "fields": {
+            "name": "Edron Were South"
+        }
+    },
+    {
+        "model": "TibiaGGapi.location",
+        "pk": 2,
+        "fields": {
+            "name": "Darashia Dragon Lair"
+        }
+    }
+]
