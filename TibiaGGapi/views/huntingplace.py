@@ -4,7 +4,25 @@ from rest_framework.response import Response
 from rest_framework import serializers, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
-from TibiaGGapi.models import Hunting_Place, Location, Comment
+from TibiaGGapi.models import Hunting_Place, Hunting_Place_Comment, Location, Vocation
+
+
+class HuntingPlaceCommentSerializer(serializers.ModelSerializer):
+    """Serializer for hunting place comments"""
+
+    user_username = serializers.CharField(source="user.username", read_only=True)
+
+    class Meta:
+        model = Hunting_Place_Comment
+        fields = [
+            "id",
+            "user",
+            "user_username",
+            "comment",
+            "created_at",
+            "updated_at",
+        ]
+        read_only_fields = ["id", "user", "created_at", "updated_at"]
 
 
 class HuntingPlaceSerializer(serializers.ModelSerializer):
@@ -12,9 +30,11 @@ class HuntingPlaceSerializer(serializers.ModelSerializer):
 
     location_name = serializers.CharField(source="location.name", read_only=True)
     user_username = serializers.CharField(source="user.username", read_only=True)
-    comment_description = serializers.CharField(
-        source="comment.description", read_only=True
+    vocation_name = serializers.CharField(
+        source="recommended_vocation.name", read_only=True
     )
+    comments = HuntingPlaceCommentSerializer(many=True, read_only=True)
+    comment_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Hunting_Place
@@ -22,17 +42,23 @@ class HuntingPlaceSerializer(serializers.ModelSerializer):
             "id",
             "user",
             "user_username",
+            "description",
             "recommended_level",
             "raw_exp",
             "est_profit",
-            "comment",
-            "comment_description",
+            "recommended_vocation",
+            "vocation_name",
             "location",
             "location_name",
+            "comments",
+            "comment_count",
             "created_at",
             "updated_at",
         ]
         read_only_fields = ["id", "created_at", "updated_at", "user"]
+
+    def get_comment_count(self, obj):
+        return obj.comments.count()
 
 
 class HuntingPlaceViewSet(ViewSet):
@@ -43,9 +69,13 @@ class HuntingPlaceViewSet(ViewSet):
     def list(self, request):
         """Get all hunting places"""
         try:
-            hunting_places = Hunting_Place.objects.select_related(
-                "user", "location", "comment"
-            ).all()
+            hunting_places = (
+                Hunting_Place.objects.select_related(
+                    "user", "location", "recommended_vocation"
+                )
+                .prefetch_related("comments")
+                .all()
+            )
             serializer = HuntingPlaceSerializer(hunting_places, many=True)
             return Response(serializer.data)
         except Exception as ex:
@@ -54,9 +84,13 @@ class HuntingPlaceViewSet(ViewSet):
     def retrieve(self, request, pk=None):
         """Get a single hunting place"""
         try:
-            hunting_place = Hunting_Place.objects.select_related(
-                "user", "location", "comment"
-            ).get(pk=pk)
+            hunting_place = (
+                Hunting_Place.objects.select_related(
+                    "user", "location", "recommended_vocation"
+                )
+                .prefetch_related("comments__user")
+                .get(pk=pk)
+            )
             serializer = HuntingPlaceSerializer(hunting_place)
             return Response(serializer.data)
         except Hunting_Place.DoesNotExist:
@@ -130,11 +164,50 @@ class HuntingPlaceViewSet(ViewSet):
     def my_hunting_places(self, request):
         """Get hunting places created by the current user"""
         try:
-            hunting_places = Hunting_Place.objects.select_related(
-                "user", "location", "comment"
-            ).filter(user=request.user)
+            hunting_places = (
+                Hunting_Place.objects.select_related(
+                    "user", "location", "recommended_vocation"
+                )
+                .prefetch_related("comments")
+                .filter(user=request.user)
+            )
             serializer = HuntingPlaceSerializer(hunting_places, many=True)
             return Response(serializer.data)
+        except Exception as ex:
+            return HttpResponseServerError(ex)
+
+    @action(detail=True, methods=["post"])
+    def add_comment(self, request, pk=None):
+        """Add a comment to a hunting place"""
+        try:
+            hunting_place = Hunting_Place.objects.get(pk=pk)
+            comment_serializer = HuntingPlaceCommentSerializer(data=request.data)
+
+            if comment_serializer.is_valid():
+                comment_serializer.save(user=request.user, hunting_place=hunting_place)
+                return Response(comment_serializer.data, status=status.HTTP_201_CREATED)
+            return Response(
+                comment_serializer.errors, status=status.HTTP_400_BAD_REQUEST
+            )
+        except Hunting_Place.DoesNotExist:
+            return Response(
+                {"message": "Hunting place not found"}, status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as ex:
+            return HttpResponseServerError(ex)
+
+    @action(detail=True, methods=["get"])
+    def comments(self, request, pk=None):
+        """Get all comments for a hunting place"""
+        try:
+            hunting_place = Hunting_Place.objects.get(pk=pk)
+            comments = hunting_place.comments.select_related("user").all()
+            serializer = HuntingPlaceCommentSerializer(comments, many=True)
+            return Response(serializer.data)
+        except Hunting_Place.DoesNotExist:
+            return Response(
+                {"message": "Hunting place not found"}, status=status.HTTP_404_NOT_FOUND
+            )
         except Exception as ex:
             return HttpResponseServerError(ex)
 
@@ -146,7 +219,7 @@ class HuntingPlaceViewSet(ViewSet):
             max_level = request.query_params.get("max_level")
 
             hunting_places = Hunting_Place.objects.select_related(
-                "user", "location", "comment"
+                "user", "location", "recommended_vocation"
             ).all()
 
             if min_level:
@@ -166,7 +239,9 @@ class HuntingPlaceViewSet(ViewSet):
             min_profit = request.query_params.get("min_profit", 0)
 
             hunting_places = (
-                Hunting_Place.objects.select_related("user", "location", "comment")
+                Hunting_Place.objects.select_related(
+                    "user", "location", "recommended_vocation"
+                )
                 .filter(est_profit__gte=min_profit)
                 .order_by("-est_profit")
             )
