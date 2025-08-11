@@ -4,7 +4,30 @@ from rest_framework.response import Response
 from rest_framework import serializers, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
-from TibiaGGapi.models import Hunting_Place, Hunting_Place_Comment, Location, Vocation
+from TibiaGGapi.models import (
+    Hunting_Place,
+    Hunting_Place_Comment,
+    Location,
+    Vocation,
+    Creature,
+    Imbue,
+)
+
+
+class CreatureSerializer(serializers.ModelSerializer):
+    """Serializer for creature objects in hunting places"""
+
+    class Meta:
+        model = Creature
+        fields = ["id", "name", "hitpoints", "experience_points", "image_url"]
+
+
+class ImbueSerializer(serializers.ModelSerializer):
+    """Serializer for imbue objects in hunting places"""
+
+    class Meta:
+        model = Imbue
+        fields = ["id", "name", "image"]
 
 
 class HuntingPlaceCommentSerializer(serializers.ModelSerializer):
@@ -33,6 +56,17 @@ class HuntingPlaceSerializer(serializers.ModelSerializer):
     vocation_name = serializers.CharField(
         source="recommended_vocation.name", read_only=True
     )
+    vocation_image_url = serializers.CharField(
+        source="recommended_vocation.image_url", read_only=True
+    )
+    creatures = CreatureSerializer(many=True, read_only=True)
+    creature_ids = serializers.ListField(
+        child=serializers.IntegerField(), write_only=True, required=False
+    )
+    imbues = ImbueSerializer(many=True, read_only=True)
+    imbue_ids = serializers.ListField(
+        child=serializers.IntegerField(), write_only=True, required=False
+    )
     comments = HuntingPlaceCommentSerializer(many=True, read_only=True)
     comment_count = serializers.SerializerMethodField()
 
@@ -48,6 +82,11 @@ class HuntingPlaceSerializer(serializers.ModelSerializer):
             "est_profit",
             "recommended_vocation",
             "vocation_name",
+            "vocation_image_url",
+            "creatures",
+            "creature_ids",
+            "imbues",
+            "imbue_ids",
             "location",
             "location_name",
             "comments",
@@ -56,6 +95,31 @@ class HuntingPlaceSerializer(serializers.ModelSerializer):
             "updated_at",
         ]
         read_only_fields = ["id", "created_at", "updated_at", "user"]
+
+    def create(self, validated_data):
+        creature_ids = validated_data.pop("creature_ids", [])
+        imbue_ids = validated_data.pop("imbue_ids", [])
+        hunting_place = Hunting_Place.objects.create(**validated_data)
+        if creature_ids:
+            hunting_place.creatures.set(creature_ids)
+        if imbue_ids:
+            hunting_place.imbues.set(imbue_ids)
+        return hunting_place
+
+    def update(self, instance, validated_data):
+        creature_ids = validated_data.pop("creature_ids", None)
+        imbue_ids = validated_data.pop("imbue_ids", None)
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+        if creature_ids is not None:
+            instance.creatures.set(creature_ids)
+        if imbue_ids is not None:
+            instance.imbues.set(imbue_ids)
+
+        return instance
 
     def get_comment_count(self, obj):
         return obj.comments.count()
@@ -73,7 +137,7 @@ class HuntingPlaceViewSet(ViewSet):
                 Hunting_Place.objects.select_related(
                     "user", "location", "recommended_vocation"
                 )
-                .prefetch_related("comments")
+                .prefetch_related("creatures", "comments")
                 .all()
             )
             serializer = HuntingPlaceSerializer(hunting_places, many=True)
@@ -88,7 +152,7 @@ class HuntingPlaceViewSet(ViewSet):
                 Hunting_Place.objects.select_related(
                     "user", "location", "recommended_vocation"
                 )
-                .prefetch_related("comments__user")
+                .prefetch_related("creatures", "comments__user")
                 .get(pk=pk)
             )
             serializer = HuntingPlaceSerializer(hunting_place)
@@ -168,7 +232,7 @@ class HuntingPlaceViewSet(ViewSet):
                 Hunting_Place.objects.select_related(
                     "user", "location", "recommended_vocation"
                 )
-                .prefetch_related("comments")
+                .prefetch_related("creatures", "comments")
                 .filter(user=request.user)
             )
             serializer = HuntingPlaceSerializer(hunting_places, many=True)

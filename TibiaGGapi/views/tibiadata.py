@@ -87,6 +87,7 @@ def get_creature_info(request, name):
                     "name": creature.name,
                     "hitpoints": creature.hitpoints,
                     "experience_points": creature.experience_points,
+                    "image_url": creature.image_url,
                     "last_updated": creature.last_updated,
                 }
             )
@@ -108,12 +109,14 @@ def get_creature_info(request, name):
             extracted_name = creature_data.get("name", "")
             extracted_hitpoints = creature_data.get("hitpoints", 0)
             extracted_experience = creature_data.get("experience_points", 0)
+            extracted_image_url = creature_data.get("image_url", "")
 
             if creature:
                 # Update existing creature
                 creature.name = extracted_name
                 creature.hitpoints = extracted_hitpoints
                 creature.experience_points = extracted_experience
+                creature.image_url = extracted_image_url
                 creature.last_updated = timezone.now()
                 creature.save()
             else:
@@ -122,6 +125,7 @@ def get_creature_info(request, name):
                     name=extracted_name,
                     hitpoints=extracted_hitpoints,
                     experience_points=extracted_experience,
+                    image_url=extracted_image_url,
                 )
 
             # Return our clean data structure
@@ -130,6 +134,7 @@ def get_creature_info(request, name):
                     "name": creature.name,
                     "hitpoints": creature.hitpoints,
                     "experience_points": creature.experience_points,
+                    "image_url": creature.image_url,
                     "last_updated": creature.last_updated,
                 }
             )

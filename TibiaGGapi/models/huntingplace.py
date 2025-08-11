@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from .comment import Comment
 from .location import Location
 from .vocation import Vocation
+from .creature import Creature
+from .imbue import Imbue
 
 
 class Hunting_Place(models.Model):
@@ -21,6 +23,17 @@ class Hunting_Place(models.Model):
         null=True,
         blank=True,
         help_text="Best vocation for this hunting place",
+    )
+    creatures = models.ManyToManyField(
+        Creature,
+        related_name="hunting_places",
+        help_text="Creatures found in this hunting place",
+    )
+    imbues = models.ManyToManyField(
+        Imbue,
+        related_name="hunting_places",
+        blank=True,
+        help_text="Recommended imbues for this hunting place",
     )
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)

@@ -6,6 +6,7 @@ class Creature(models.Model):
     name = models.CharField(max_length=100, unique=True)
     hitpoints = models.IntegerField()
     experience_points = models.IntegerField()
+    image_url = models.URLField(max_length=500, blank=True, null=True)
     last_updated = models.DateTimeField(auto_now=True)
 
     class Meta:

@@ -1,0 +1,26 @@
+[
+    {
+        "model": "TibiaGGapi.imbue",
+        "pk": 1,
+        "fields": {
+        "name": "Vampirism",
+        "image": "public/images/imbues/vamp_imbue.webp"
+        }
+    },
+    {
+        "model": "TibiaGGapi.imbue",
+        "pk": 2,
+        "fields": {
+        "name": "Void",
+        "image": "public/images/imbues/void_imbue.webp"
+        }
+    },
+    {
+        "model": "TibiaGGapi.imbue",
+        "pk": 3,
+        "fields": {
+        "name": "Strike",
+        "image": "public/images/imbues/strike_imbue.webp"
+        }
+    }
+]

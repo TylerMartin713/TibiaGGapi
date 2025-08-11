@@ -4,49 +4,49 @@ from rest_framework.response import Response
 from rest_framework import serializers, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
-from TibiaGGapi.models import Vocation
+from TibiaGGapi.models import Imbue
 
 
-class VocationSerializer(serializers.ModelSerializer):
-    """Serializer for vocation objects"""
+class ImbueSerializer(serializers.ModelSerializer):
+    """Serializer for Imbue objects"""
 
     class Meta:
-        model = Vocation
-        fields = ["id", "name", "image_url"]
+        model = Imbue
+        fields = ["id", "name", "image"]
         read_only_fields = ["id"]
 
 
-class VocationViewSet(ViewSet):
-    """ViewSet for vocations"""
+class ImbueViewSet(ViewSet):
+    """Viewset for imbues"""
 
     permission_classes = [IsAuthenticated]
 
     def list(self, request):
-        """Get all vocations"""
+        """Get all imbues"""
         try:
-            vocations = Vocation.objects.all().order_by("name")
-            serializer = VocationSerializer(vocations, many=True)
+            imbues = Imbue.objects.all().order_by("name")
+            serializer = ImbueSerializer(imbues, many=True)
             return Response(serializer.data)
         except Exception as ex:
             return HttpResponseServerError(ex)
 
     def retrieve(self, request, pk=None):
-        """Get a single vocation"""
+        """Get a single imbue"""
         try:
-            vocation = Vocation.objects.get(pk=pk)
-            serializer = VocationSerializer(vocation)
+            imbue = Imbue.objects.get(pk=pk)
+            serializer = ImbueSerializer(imbue)
             return Response(serializer.data)
-        except Vocation.DoesNotExist:
+        except Imbue.DoesNotExist:
             return Response(
-                {"message": "Vocation not found"}, status=status.HTTP_404_NOT_FOUND
+                {"message": "Imbue not found"}, status=status.HTTP_404_NOT_FOUND
             )
         except Exception as ex:
             return HttpResponseServerError(ex)
 
     def create(self, request):
-        """Create a new vocation"""
+        """Create a new imbue"""
         try:
-            serializer = VocationSerializer(data=request.data)
+            serializer = ImbueSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -55,33 +55,33 @@ class VocationViewSet(ViewSet):
             return HttpResponseServerError(ex)
 
     def update(self, request, pk=None):
-        """Update a Vocation"""
+        """Update a imbue"""
         try:
-            vocation = Vocation.objects.get(pk=pk)
-            serializer = VocationSerializer(vocation, data=request.data)
+            imbue = Imbue.objects.get(pk=pk)
+            serializer = ImbueSerializer(imbue, data=request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        except Vocation.DoesNotExist:
+        except Imbue.DoesNotExist:
             return Response(
-                {"message": "Vocation not found"}, status=status.HTTP_404_NOT_FOUND
+                {"message": "Imbue not found"}, status=status.HTTP_404_NOT_FOUND
             )
         except Exception as ex:
             return HttpResponseServerError(ex)
 
     def destroy(self, request, pk=None):
-        """Delete a vocation"""
+        """Delete a imbue"""
         try:
-            vocation = Vocation.objects.get(pk=pk)
-            vocation.delete()
+            imbue = Imbue.objects.get(pk=pk)
+            imbue.delete()
             return Response(
-                {"message": "Vocation delete successfully"},
+                {"message": "Imbue deleted successfully"},
                 status=status.HTTP_204_NO_CONTENT,
             )
-        except Vocation.DoesNotExist:
+        except Imbue.DoesNotExist:
             return Response(
-                {"message": "Vocation not found"}, status=status.HTTP_404_NOT_FOUND
+                {"message": "Imbue not found"}, status=status.HTTP_404_NOT_FOUND
             )
         except Exception as ex:
             return HttpResponseServerError(ex)

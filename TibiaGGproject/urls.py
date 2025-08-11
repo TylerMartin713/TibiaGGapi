@@ -11,6 +11,7 @@ from TibiaGGapi.views.location import LocationViewSet
 from TibiaGGapi.views.vocation import VocationViewSet
 from TibiaGGapi.views.character import CharacterViewSet
 from TibiaGGapi.views.creature import CreatureViewSet
+from TibiaGGapi.views.imbue import ImbueViewSet
 from TibiaGGapi.views.tibiadata import get_character_info, get_creature_info
 
 
@@ -20,6 +21,7 @@ router.register(r"locations", LocationViewSet, basename="location")
 router.register(r"vocations", VocationViewSet, basename="vocation")
 router.register(r"characters", CharacterViewSet, basename="character")
 router.register(r"creatures", CreatureViewSet, basename="creature")
+router.register(r"imbues", ImbueViewSet, basename="imbue")
 
 
 urlpatterns = [

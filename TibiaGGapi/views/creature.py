@@ -12,7 +12,14 @@ class CreatureSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Creature
-        fields = ["id", "name", "hitpoints", "experience_points", "last_updated"]
+        fields = [
+            "id",
+            "name",
+            "hitpoints",
+            "experience_points",
+            "image_url",
+            "last_updated",
+        ]
         read_only_fields = ["id", "last_updated"]
 
 
