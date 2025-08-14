@@ -1,0 +1,186 @@
+[
+  {
+    "model": "TibiaGGapi.item",
+    "pk": 1,
+    "fields": {
+      "name": "Angelic Axe",
+      "image_url": "/images/items/Angelic_Axe.gif"
+    }
+  },
+  {
+    "model": "TibiaGGapi.item",
+    "pk": 2,
+    "fields": {
+      "name": "Blue Gem",
+      "image_url": "/images/items/Blue_Gem.gif"
+    }
+  },
+  {
+    "model": "TibiaGGapi.item",
+    "pk": 3,
+    "fields": {
+      "name": "Bonebreaker",
+      "image_url": "/images/items/Bonebreaker.gif"
+    }
+  },
+  {
+    "model": "TibiaGGapi.item",
+    "pk": 4,
+    "fields": {
+      "name": "Dragon Lord Trophy",
+      "image_url": "/images/items/Dragon_Lord_Trophy.gif"
+    }
+  },
+  {
+    "model": "TibiaGGapi.item",
+    "pk": 5,
+    "fields": {
+      "name": "Dragon Scale Mail",
+      "image_url": "/images/items/Dragon_Scale_Mail.gif"
+    }
+  },
+  {
+    "model": "TibiaGGapi.item",
+    "pk": 6,
+    "fields": {
+      "name": "Dragon Slayer",
+      "image_url": "/images/items/Dragon_Slayer.gif"
+    }
+  },
+  {
+    "model": "TibiaGGapi.item",
+    "pk": 7,
+    "fields": {
+      "name": "Fur Armor",
+      "image_url": "/images/items/Fur_Armor.gif"
+    }
+  },
+  {
+    "model": "TibiaGGapi.item",
+    "pk": 8,
+    "fields": {
+      "name": "Gemmed Figurine",
+      "image_url": "/images/items/Gemmed_Figurine.gif"
+    }
+  },
+  {
+    "model": "TibiaGGapi.item",
+    "pk": 9,
+    "fields": {
+      "name": "Glorious Axe",
+      "image_url": "/images/items/Glorious_Axe.gif"
+    }
+  },
+  {
+    "model": "TibiaGGapi.item",
+    "pk": 10,
+    "fields": {
+      "name": "Golden Sun Coin",
+      "image_url": "/images/items/Golden_Sun_Coin.gif"
+    }
+  },
+  {
+    "model": "TibiaGGapi.item",
+    "pk": 11,
+    "fields": {
+      "name": "Knight Armor",
+      "image_url": "/images/items/Knight_Armor.gif"
+    }
+  },
+  {
+    "model": "TibiaGGapi.item",
+    "pk": 12,
+    "fields": {
+      "name": "Magma Monocle",
+      "image_url": "/images/items/Magma_Monocle.gif"
+    }
+  },
+  {
+    "model": "TibiaGGapi.item",
+    "pk": 13,
+    "fields": {
+      "name": "Ornate Crossbow",
+      "image_url": "/images/items/Ornate_Crossbow.gif"
+    }
+  },
+  {
+    "model": "TibiaGGapi.item",
+    "pk": 14,
+    "fields": {
+      "name": "Royal Helmet",
+      "image_url": "/images/items/Royal_Helmet.gif"
+    }
+  },
+  {
+    "model": "TibiaGGapi.item",
+    "pk": 15,
+    "fields": {
+      "name": "Silver Moon Coin",
+      "image_url": "/images/items/Silver_Moon_Coin.gif"
+    }
+  },
+  {
+    "model": "TibiaGGapi.item",
+    "pk": 16,
+    "fields": {
+      "name": "Sun Brooch",
+      "image_url": "/images/items/Sun_Brooch.gif"
+    }
+  },
+  {
+    "model": "TibiaGGapi.item",
+    "pk": 17,
+    "fields": {
+      "name": "Swamplair Armor",
+      "image_url": "/images/items/Swamplair_Armor.gif"
+    }
+  },
+  {
+    "model": "TibiaGGapi.item",
+    "pk": 18,
+    "fields": {
+      "name": "Terra Mantle",
+      "image_url": "/images/items/Terra_Mantle.gif"
+    }
+  },
+  {
+    "model": "TibiaGGapi.item",
+    "pk": 19,
+    "fields": {
+      "name": "Tower Shield",
+      "image_url": "/images/items/Tower_Shield.gif"
+    }
+  },
+  {
+    "model": "TibiaGGapi.item",
+    "pk": 20,
+    "fields": {
+      "name": "Violet Gem",
+      "image_url": "/images/items/Violet_Gem.gif"
+    }
+  },
+  {
+    "model": "TibiaGGapi.item",
+    "pk": 21,
+    "fields": {
+      "name": "Werecrocodile Trophy",
+      "image_url": "/images/items/Werecrocodile_Trophy.gif"
+    }
+  },
+  {
+    "model": "TibiaGGapi.item",
+    "pk": 22,
+    "fields": {
+      "name": "Werepanther Trophy",
+      "image_url": "/images/items/Werepanther_Trophy.gif"
+    }
+  },
+  {
+    "model": "TibiaGGapi.item",
+    "pk": 23,
+    "fields": {
+      "name": "Weretiger Trophy",
+      "image_url": "/images/items/Weretiger_Trophy.gif"
+    }
+  }
+]

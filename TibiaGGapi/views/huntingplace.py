@@ -11,6 +11,7 @@ from TibiaGGapi.models import (
     Vocation,
     Creature,
     Imbue,
+    Item,
 )
 
 
@@ -28,6 +29,14 @@ class ImbueSerializer(serializers.ModelSerializer):
     class Meta:
         model = Imbue
         fields = ["id", "name", "image"]
+
+
+class ItemSerializer(serializers.ModelSerializer):
+    """Serializer for item objects in hunting places"""
+
+    class Meta:
+        model = Item
+        fields = ["id", "name", "image_url"]
 
 
 class HuntingPlaceCommentSerializer(serializers.ModelSerializer):
@@ -67,6 +76,10 @@ class HuntingPlaceSerializer(serializers.ModelSerializer):
     imbue_ids = serializers.ListField(
         child=serializers.IntegerField(), write_only=True, required=False
     )
+    items = ItemSerializer(many=True, read_only=True)
+    item_ids = serializers.ListField(
+        child=serializers.IntegerField(), write_only=True, required=False
+    )
     comments = HuntingPlaceCommentSerializer(many=True, read_only=True)
     comment_count = serializers.SerializerMethodField()
 
@@ -87,6 +100,8 @@ class HuntingPlaceSerializer(serializers.ModelSerializer):
             "creature_ids",
             "imbues",
             "imbue_ids",
+            "items",
+            "item_ids",
             "location",
             "location_name",
             "comments",
@@ -99,16 +114,20 @@ class HuntingPlaceSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         creature_ids = validated_data.pop("creature_ids", [])
         imbue_ids = validated_data.pop("imbue_ids", [])
+        item_ids = validated_data.pop("item_ids", [])
         hunting_place = Hunting_Place.objects.create(**validated_data)
         if creature_ids:
             hunting_place.creatures.set(creature_ids)
         if imbue_ids:
             hunting_place.imbues.set(imbue_ids)
+        if item_ids:
+            hunting_place.items.set(item_ids)
         return hunting_place
 
     def update(self, instance, validated_data):
         creature_ids = validated_data.pop("creature_ids", None)
         imbue_ids = validated_data.pop("imbue_ids", None)
+        item_ids = validated_data.pop("item_ids", None)
 
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
@@ -118,6 +137,8 @@ class HuntingPlaceSerializer(serializers.ModelSerializer):
             instance.creatures.set(creature_ids)
         if imbue_ids is not None:
             instance.imbues.set(imbue_ids)
+        if item_ids is not None:
+            instance.items.set(item_ids)
 
         return instance
 

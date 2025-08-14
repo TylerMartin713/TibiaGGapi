@@ -5,6 +5,7 @@ from .location import Location
 from .vocation import Vocation
 from .creature import Creature
 from .imbue import Imbue
+from .item import Item
 
 
 class Hunting_Place(models.Model):
@@ -34,6 +35,12 @@ class Hunting_Place(models.Model):
         related_name="hunting_places",
         blank=True,
         help_text="Recommended imbues for this hunting place",
+    )
+    items = models.ManyToManyField(
+        "Item",
+        related_name="hunting_places",
+        blank=True,
+        help_text="Items that drop in this hunting place",
     )
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)

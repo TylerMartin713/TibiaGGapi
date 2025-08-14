@@ -4,7 +4,7 @@
         "pk": 1,
         "fields": {
         "name": "Vampirism",
-        "image": "public/images/imbues/vamp_imbue.webp"
+        "image": "/images/imbues/vamp_imbue.webp"
         }
     },
     {
@@ -12,7 +12,7 @@
         "pk": 2,
         "fields": {
         "name": "Void",
-        "image": "public/images/imbues/void_imbue.webp"
+        "image": "/images/imbues/void_imbue.webp"
         }
     },
     {
@@ -20,7 +20,7 @@
         "pk": 3,
         "fields": {
         "name": "Strike",
-        "image": "public/images/imbues/strike_imbue.webp"
+        "image": "/images/imbues/strike_imbue.webp"
         }
     }
 ]
