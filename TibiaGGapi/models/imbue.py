@@ -3,7 +3,7 @@ from django.db import models
 
 class Imbue(models.Model):
     name = models.CharField(max_length=255)
-    image = models.ImageField()
+    image = models.URLField(max_length=500, blank=True, null=True)
 
     class Meta:
         db_table = "imbue"

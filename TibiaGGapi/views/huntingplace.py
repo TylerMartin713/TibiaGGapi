@@ -236,7 +236,7 @@ class HuntingPlaceViewSet(ViewSet):
             hunting_place.delete()
             return Response(
                 {"message": "Hunting place deleted successfully"},
-                status=status.HTTP_204_NO_CONTENT,
+                status=status.HTTP_200_OK,
             )
         except Hunting_Place.DoesNotExist:
             return Response(
