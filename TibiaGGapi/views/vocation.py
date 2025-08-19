@@ -2,7 +2,7 @@ from django.http import HttpResponseServerError
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import action
 from TibiaGGapi.models import Vocation
 
@@ -19,7 +19,7 @@ class VocationSerializer(serializers.ModelSerializer):
 class VocationViewSet(ViewSet):
     """ViewSet for vocations"""
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def list(self, request):
         """Get all vocations"""

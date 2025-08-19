@@ -4,24 +4,21 @@ from django.utils import timezone
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
+from TibiaGGapi.views.character import CharacterSerializer
+from TibiaGGapi.views.creature import CreatureSerializer
 import requests
 
 
 @api_view(["GET"])
+@permission_classes([AllowAny])
 def get_character_info(request, name):
     try:
         char = Character.objects.get(name__iexact=name)
 
         if char.is_fresh():
-            # Return our clean data structure
-            return Response(
-                {
-                    "name": char.name,
-                    "vocation": char.vocation,
-                    "level": char.level,
-                    "last_updated": char.last_updated,
-                }
-            )
+            # Return serialized character data
+            serializer = CharacterSerializer(char)
+            return Response(serializer.data)
 
     except Character.DoesNotExist:
         char = None
@@ -57,15 +54,9 @@ def get_character_info(request, name):
                     level=extracted_level,
                 )
 
-            # Return our clean data structure
-            return Response(
-                {
-                    "name": char.name,
-                    "vocation": char.vocation,
-                    "level": char.level,
-                    "last_updated": char.last_updated,
-                }
-            )
+            # Return serialized character data
+            serializer = CharacterSerializer(char)
+            return Response(serializer.data)
 
         except KeyError as e:
             return Response(
@@ -76,21 +67,15 @@ def get_character_info(request, name):
 
 
 @api_view(["GET"])
+@permission_classes([AllowAny])
 def get_creature_info(request, name):
     try:
         creature = Creature.objects.get(name__iexact=name)
 
         if creature.is_fresh():
-            # Return our clean data structure
-            return Response(
-                {
-                    "name": creature.name,
-                    "hitpoints": creature.hitpoints,
-                    "experience_points": creature.experience_points,
-                    "image_url": creature.image_url,
-                    "last_updated": creature.last_updated,
-                }
-            )
+            # Return serialized creature data
+            serializer = CreatureSerializer(creature)
+            return Response(serializer.data)
 
     except Creature.DoesNotExist:
         creature = None
@@ -128,16 +113,9 @@ def get_creature_info(request, name):
                     image_url=extracted_image_url,
                 )
 
-            # Return our clean data structure
-            return Response(
-                {
-                    "name": creature.name,
-                    "hitpoints": creature.hitpoints,
-                    "experience_points": creature.experience_points,
-                    "image_url": creature.image_url,
-                    "last_updated": creature.last_updated,
-                }
-            )
+            # Return serialized creature data
+            serializer = CreatureSerializer(creature)
+            return Response(serializer.data)
 
         except KeyError as e:
             return Response(

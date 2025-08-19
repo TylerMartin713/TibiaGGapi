@@ -139,3 +139,69 @@ class CharacterViewSet(ViewSet):
             return Response(serializer.data)
         except Exception as ex:
             return HttpResponseServerError(ex)
+
+    @action(detail=False, methods=["post"])
+    def search_and_add(self, request):
+        """Search for a character from Tibia API and add to database"""
+        try:
+            import requests
+            from datetime import datetime
+
+            character_name = request.data.get("name", "").strip()
+            if not character_name:
+                return Response(
+                    {"error": "Character name is required"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            # Check if character already exists in our database
+            existing_character = Character.objects.filter(
+                name__iexact=character_name
+            ).first()
+            if existing_character:
+                return Response(
+                    {
+                        "error": f"Character '{character_name}' already exists in your database"
+                    },
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            # Fetch character data from Tibia API
+            api_url = f"https://api.tibiadata.com/v4/character/{character_name}"
+            response = requests.get(api_url)
+
+            if response.status_code != 200:
+                return Response(
+                    {"error": "Failed to fetch character data from Tibia API"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            data = response.json()
+
+            # Check if character exists in Tibia
+            if not data.get("characters") or not data["characters"].get("character"):
+                return Response(
+                    {"error": f"Character '{character_name}' not found in Tibia"},
+                    status=status.HTTP_404_NOT_FOUND,
+                )
+
+            char_data = data["characters"]["character"]
+
+            # Create new character in our database
+            new_character = Character.objects.create(
+                name=char_data.get("name"),
+                vocation=char_data.get("vocation"),
+                level=char_data.get("level"),
+                last_updated=datetime.now(),
+            )
+
+            serializer = CharacterSerializer(new_character)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        except requests.RequestException as e:
+            return Response(
+                {"error": "Failed to connect to Tibia API"},
+                status=status.HTTP_503_SERVICE_UNAVAILABLE,
+            )
+        except Exception as ex:
+            return HttpResponseServerError(ex)

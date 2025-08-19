@@ -18,6 +18,9 @@ class Hunting_Place(models.Model):
     recommended_level = models.IntegerField()
     raw_exp = models.IntegerField(help_text="Raw experience per hour")
     est_profit = models.IntegerField(help_text="Estimated profit per hour")
+    youtube_url = models.URLField(
+        help_text="YouTube video URL for this hunting place", blank=True, null=True
+    )
     recommended_vocation = models.ForeignKey(
         Vocation,
         on_delete=models.SET_NULL,

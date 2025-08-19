@@ -2,7 +2,7 @@ from django.http import HttpResponseServerError
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import action
 from TibiaGGapi.models import (
     Hunting_Place,
@@ -93,6 +93,7 @@ class HuntingPlaceSerializer(serializers.ModelSerializer):
             "recommended_level",
             "raw_exp",
             "est_profit",
+            "youtube_url",
             "recommended_vocation",
             "vocation_name",
             "vocation_image_url",
@@ -150,6 +151,17 @@ class HuntingPlaceViewSet(ViewSet):
     """ViewSet for hunting places"""
 
     permission_classes = [IsAuthenticated]
+
+    def get_permissions(self):
+        """
+        Instantiates and returns the list of permissions that this view requires.
+        """
+        if self.action == "list" or self.action == "retrieve":
+            permission_classes = [AllowAny]
+        else:
+            permission_classes = [IsAuthenticated]
+
+        return [permission() for permission in permission_classes]
 
     def list(self, request):
         """Get all hunting places"""
