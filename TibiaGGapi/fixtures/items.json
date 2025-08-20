@@ -270,5 +270,101 @@
       "name": "Dragon Shield",
       "image_url": "/images/items/Dragon_Shield.gif"
     }
+  },
+  {
+    "model": "TibiaGGapi.item",
+    "pk": 35,
+    "fields": {
+      "name": "Crest of the Deep Seas",
+      "image_url": "/images/items/Crest_of_the_Deep_Seas.gif"
+    }
+  },
+  {
+    "model": "TibiaGGapi.item",
+    "pk": 36,
+    "fields": {
+      "name": "Crystalline Armor",
+      "image_url": "/images/items/Crystalline_Armor.gif"
+    }
+  },
+  {
+    "model": "TibiaGGapi.item",
+    "pk": 37,
+    "fields": {
+      "name": "Focus Cape",
+      "image_url": "/images/items/Focus_Cape.gif"
+    }
+  },
+  {
+    "model": "TibiaGGapi.item",
+    "pk": 38,
+    "fields": {
+      "name": "Glacier Amulet",
+      "image_url": "/images/items/Glacier_Amulet.gif"
+    }
+  },
+  {
+    "model": "TibiaGGapi.item",
+    "pk": 39,
+    "fields": {
+      "name": "Glacier Kilt",
+      "image_url": "/images/items/Glacier_Kilt.gif"
+    }
+  },
+  {
+    "model": "TibiaGGapi.item",
+    "pk": 40,
+    "fields": {
+      "name": "Glacier Mask",
+      "image_url": "/images/items/Glacier_Mask.gif"
+    }
+  },
+  {
+    "model": "TibiaGGapi.item",
+    "pk": 41,
+    "fields": {
+      "name": "Glacier Shoes",
+      "image_url": "/images/items/Glacier_Shoes.gif"
+    }
+  },
+  {
+    "model": "TibiaGGapi.item",
+    "pk": 42,
+    "fields": {
+      "name": "Northwind Rod",
+      "image_url": "/images/items/Northwind_Rod.gif"
+    }
+  },
+  {
+    "model": "TibiaGGapi.item",
+    "pk": 43,
+    "fields": {
+      "name": "Wand of Defiance",
+      "image_url": "/images/items/Wand_of_Defiance.gif"
+    }
+  },
+  {
+    "model": "TibiaGGapi.item",
+    "pk": 44,
+    "fields": {
+      "name": "Wand of Draconia",
+      "image_url": "/images/items/Wand_of_Draconia.gif"
+    }
+  },
+  {
+    "model": "TibiaGGapi.item",
+    "pk": 45,
+    "fields": {
+      "name": "Crocodile Boots",
+      "image_url": "/images/items/Crocodile_Boots.gif"
+    }
+  },
+  {
+    "model": "TibiaGGapi.item",
+    "pk": 46,
+    "fields": {
+      "name": "Crystal Mace",
+      "image_url": "/images/items/Crystal_Mace.gif"
+    }
   }
 ]

@@ -16,6 +16,7 @@ from TibiaGGapi.views.creature import CreatureViewSet
 from TibiaGGapi.views.imbue import ImbueViewSet
 from TibiaGGapi.views.item import ItemViewSet
 from TibiaGGapi.views.favorite import FavoriteViewSet
+from TibiaGGapi.views.quest import QuestView
 from TibiaGGapi.views.tibiadata import get_character_info, get_creature_info
 
 
@@ -28,6 +29,7 @@ router.register(r"creatures", CreatureViewSet, basename="creature")
 router.register(r"imbues", ImbueViewSet, basename="imbue")
 router.register(r"items", ItemViewSet, basename="item")
 router.register(r"favorites", FavoriteViewSet, basename="favorite")
+router.register(r"quests", QuestView, basename="quest")
 
 
 urlpatterns = [
